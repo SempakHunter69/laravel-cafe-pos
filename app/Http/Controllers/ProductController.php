@@ -33,8 +33,26 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|min:3|unique:products',
+            'description' => 'required|min:10',
+            'price' => 'required|integer',
+            'stocks' => 'required|integer',
+            'category' => 'required|in:food,drink,snack',
+            'image' => 'required|image|mimes:png,jpg,jpeg',
+        ]);
+        $filename = time() . '.' . $request->image->extension();
+        $request->image->storeAs('public/products', $filename);
         $data = $request->all();
-        Product::create($data);
+        $product = new Product;
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->price = (float) $request->price;
+        $product->stocks = (int) $request->stocks;
+        $product->category = $request->category;
+        $product->image = $filename;
+        $product->save();
+        // Product::create($data);
         return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan');
     }
 

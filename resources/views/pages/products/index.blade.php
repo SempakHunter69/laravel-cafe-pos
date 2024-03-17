@@ -58,7 +58,7 @@
                                 <div class="table-responsive">
                                     <table class="table-striped table">
                                         <tr>
-
+                                            <th>Photo Produk</th>
                                             <th>Nama Produk</th>
                                             <th>Deskripsi</th>
                                             <th>Harga</th>
@@ -68,7 +68,14 @@
                                         </tr>
                                         @foreach ($products as $product)
                                             <tr>
-
+                                                <td>
+                                                    @if ($product->image)
+                                                        <img src="{{ asset('storage/products/' . $product->image) }}"
+                                                            alt="" width="100px">
+                                                    @else
+                                                        <span class="badge badge-danger">No Image</span>
+                                                    @endif
+                                                </td>
                                                 <td>{{ $product->name }}
                                                     <div class="table-links">
                                                         <a href="#">View</a>
